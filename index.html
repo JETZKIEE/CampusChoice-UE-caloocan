@@ -405,30 +405,31 @@
     }
 
     document.getElementById("accountForm").addEventListener("submit", function(event) {
-      event.preventDefault();
+  event.preventDefault();
 
-      const message = document.getElementById("formMessage");
-      const password = document.getElementById("password").value;
+  const message = document.getElementById("formMessage");
+  const password = document.getElementById("password").value;
 
-      if (currentMode === "register") {
-        const confirmPassword =
-          document.getElementById("confirmPassword").value;
+  if (currentMode === "register") {
+    const confirmPassword =
+      document.getElementById("confirmPassword").value;
 
-        if (password !== confirmPassword) {
-          message.textContent = "Your passwords do not match. Please try again.";
-          message.style.display = "block";
-          return;
-        }
-
-        message.textContent =
-          "This is a frontend prototype. Account registration is not connected yet. A secure backend is needed to create your account.";
-      } else {
-        message.textContent =
-          "This is a frontend prototype. Login is not connected yet, so no account has been authenticated.";
-      }
-
+    if (password !== confirmPassword) {
+      message.textContent =
+        "Your passwords do not match. Please try again.";
       message.style.display = "block";
-    });
+      return;
+    }
+
+    message.textContent =
+      "Registration is a demo only. Real account creation is not connected yet.";
+    message.style.display = "block";
+    return;
+  }
+
+  // Demo navigation only — this does not authenticate the user.
+  window.location.href = "dashboard.html";
+});
 
     document.getElementById("forgotLink").addEventListener("click", function(event) {
       event.preventDefault();
