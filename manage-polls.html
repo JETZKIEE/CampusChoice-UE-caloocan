@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -491,12 +490,14 @@
         showMessage("Please remove duplicate answer choices.");
         return;
       }
+      
+pollDrafts.push({
+  id: nextPollId++,
+  question: question,
+  choices: choices,
+  status: "Open"
+});
 
-      pollDrafts.push({
-        id: nextPollId++,
-        question: question,
-        choices: choices
-      });
 
       renderPolls();
       pollForm.reset();
