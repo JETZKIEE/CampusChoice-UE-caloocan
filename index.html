@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusChoice | Student Preference System</title>
+  <title>CampusChoice | Login</title>
 
   <style>
     * {
@@ -13,207 +13,431 @@
       padding: 0;
     }
 
+    :root {
+      --red: #a90012;
+      --dark-red: #75000c;
+      --light: #fff5f5;
+      --text: #292929;
+      --muted: #777;
+    }
+
     body {
       font-family: Arial, sans-serif;
+      min-height: 100vh;
       background: #f7f7f9;
-      color: #292929;
-      line-height: 1.6;
+      color: var(--text);
     }
 
-    header {
-      background: #a90012;
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .welcome-panel {
+      background: linear-gradient(145deg, var(--red), var(--dark-red));
       color: white;
-      padding: 18px 8%;
+      padding: 55px;
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
+      gap: 40px;
     }
 
-    .logo {
-      font-size: 25px;
+    .brand {
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+
+    .brand span {
+      color: #ffd8dc;
+    }
+
+    .welcome-copy {
+      max-width: 500px;
+      margin: auto 0;
+    }
+
+    .welcome-copy .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
       font-weight: bold;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 18px;
-    }
-
-    .hero {
-      padding: 85px 8%;
-      text-align: center;
-      background: linear-gradient(135deg, #a90012, #64000b);
-      color: white;
-    }
-
-    .hero h1 {
-      font-size: clamp(32px, 5vw, 52px);
-      line-height: 1.2;
+      color: #ffd8dc;
       margin-bottom: 20px;
     }
 
-    .hero p {
-      max-width: 650px;
-      margin: 0 auto 28px;
-      font-size: 18px;
+    .welcome-copy h1 {
+      font-size: clamp(36px, 4vw, 58px);
+      line-height: 1.12;
+      margin-bottom: 22px;
     }
 
-    .button {
-      display: inline-block;
+    .welcome-copy p {
+      line-height: 1.8;
+      color: #ffe9eb;
+      font-size: 16px;
+    }
+
+    .welcome-footer {
+      font-size: 12px;
+      color: #f7cbd0;
+    }
+
+    .form-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 45px 25px;
+    }
+
+    .form-card {
       background: white;
-      color: #a90012;
-      padding: 13px 24px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
+      padding: 38px;
+      width: 100%;
+      max-width: 440px;
+      border: 1px solid #eee;
+      border-radius: 16px;
+      box-shadow: 0 12px 40px #2b000d0c;
     }
 
-    main {
-      padding: 55px 8%;
+    .form-card h2 {
+      font-size: 30px;
+      margin-bottom: 8px;
     }
 
-    .section-title {
-      text-align: center;
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
       margin-bottom: 28px;
+      line-height: 1.6;
     }
 
-    .features {
+    .tabs {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 22px;
+      grid-template-columns: 1fr 1fr;
+      background: #f4f4f5;
+      padding: 5px;
+      border-radius: 9px;
+      margin-bottom: 27px;
     }
 
-    .feature-card {
-      background: white;
-      padding: 25px;
-      border-radius: 10px;
-      border-top: 4px solid #a90012;
-      box-shadow: 0 4px 14px #0000000d;
+    .tab {
+      padding: 11px;
+      border: none;
+      border-radius: 7px;
+      background: transparent;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #666;
     }
 
-    .feature-card h3 {
-      color: #a90012;
-      margin-bottom: 10px;
-    }
-
-    .notice {
-      margin-top: 30px;
-      padding: 18px;
-      background: #fff0f1;
-      border-radius: 8px;
-      text-align: center;
-    }
-
-    footer {
-      background: #292929;
+    .tab.active {
+      background: var(--red);
       color: white;
-      text-align: center;
-      padding: 22px;
     }
 
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #dedee3;
+      border-radius: 8px;
+      background: white;
+      color: var(--text);
+      font: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px #a9001214;
+    }
+
+    .row-between {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 2px 0 22px;
+      font-size: 12px;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: normal;
+      margin: 0;
+    }
+
+    .remember input {
+      width: auto;
+    }
+
+    .text-link {
+      color: var(--red);
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .submit-btn:hover {
+      background: var(--dark-red);
+    }
+
+    .form-message {
+      margin-top: 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--light);
+      color: var(--dark-red);
+      display: none;
+    }
+
+    .security-note {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+      text-align: center;
+      margin-top: 22px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 800px) {
+      .page {
+        grid-template-columns: 1fr;
       }
 
-      nav a {
-        margin: 0 7px;
+      .welcome-panel {
+        padding: 30px 25px;
+        min-height: 260px;
       }
 
-      .hero {
-        padding: 60px 6%;
+      .welcome-copy {
+        margin: 25px 0 0;
       }
 
-      main {
-        padding: 40px 6%;
+      .welcome-copy h1 {
+        font-size: 35px;
+      }
+
+      .welcome-footer {
+        margin-top: 10px;
+      }
+
+      .form-panel {
+        padding: 30px 18px;
+        align-items: flex-start;
+      }
+
+      .form-card {
+        padding: 27px 22px;
       }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="logo">CampusChoice</div>
+  <div class="page">
+    <section class="welcome-panel">
+      <div class="brand">Campus<span>Choice</span></div>
 
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#features">Features</a>
-      <a href="#about">About</a>
-    </nav>
-  </header>
-
-  <section class="hero" id="home">
-    <h1>Your Campus, Your Voice.</h1>
-
-    <p>
-      A student preference analysis and institutional
-      decision support system designed to help campus
-      leaders understand student needs and make informed decisions.
-    </p>
-
-    <a class="button" href="#features">Explore the System</a>
-  </section>
-
-  <main>
-    <section id="features">
-      <div class="section-title">
-        <h2>What CampusChoice Offers</h2>
-        <p>Student feedback turned into useful insights.</p>
+      <div class="welcome-copy">
+        <p class="eyebrow">Student Preference System</p>
+        <h1>Your Campus.<br>Your Voice.</h1>
+        <p>
+          Share your preferences, participate in campus polls,
+          and help shape better decisions for your university.
+          Your opinion can make a difference.
+        </p>
       </div>
 
-      <div class="features">
-        <article class="feature-card">
-          <h3>Student Polls</h3>
-          <p>
-            Gather student opinions about campus facilities,
-            activities, services, and proposed improvements.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <h3>Preference Analysis</h3>
-          <p>
-            Organize student responses to identify popular
-            choices, shared concerns, and important priorities.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <h3>Decision Support</h3>
-          <p>
-            Help campus administrators compare options and
-            consider student preferences when planning improvements.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <h3>Budget-Aware Suggestions</h3>
-          <p>
-            Plan to compare possible campus improvements
-            against available budgets and student priorities.
-          </p>
-        </article>
+      <div class="welcome-footer">
+        Student Preference Analysis and Institutional Decision Support
       </div>
     </section>
 
-    <section id="about" class="notice">
-      <h2>Built Around Student Voices</h2>
-      <p>
-        CampusChoice is a student project prototype.
-        Interactive polls, accounts, and live analytics
-        will be added in later development stages.
-      </p>
-    </section>
-  </main>
+    <main class="form-panel">
+      <section class="form-card">
+        <h2 id="formTitle">Welcome back!</h2>
+        <p class="subtitle" id="formSubtitle">
+          Sign in to continue to your CampusChoice account.
+        </p>
 
-  <footer>
-    <p>CampusChoice | Student Preference Analysis System</p>
-    <p>Academic Project Prototype</p>
-  </footer>
+        <div class="tabs">
+          <button class="tab active" id="loginTab" type="button"
+            onclick="showForm('login')">Login</button>
+          <button class="tab" id="registerTab" type="button"
+            onclick="showForm('register')">Register</button>
+        </div>
+
+        <form id="accountForm">
+          <div class="field hidden" id="nameField">
+            <label for="fullName">Full name</label>
+            <input id="fullName" name="fullName" type="text"
+              placeholder="Enter your full name" autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label for="email">Student email</label>
+            <input id="email" name="email" type="email"
+              placeholder="you@example.com" required autocomplete="email">
+          </div>
+
+          <div class="field hidden" id="studentIdField">
+            <label for="studentId">Student ID</label>
+            <input id="studentId" name="studentId" type="text"
+              placeholder="Enter your student ID">
+          </div>
+
+          <div class="field hidden" id="roleField">
+            <label for="role">Account type</label>
+            <select id="role" name="role">
+              <option value="student">Student</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password"
+              placeholder="Enter your password" required
+              autocomplete="current-password" minlength="8">
+          </div>
+
+          <div class="field hidden" id="confirmField">
+            <label for="confirmPassword">Confirm password</label>
+            <input id="confirmPassword" name="confirmPassword"
+              type="password" placeholder="Re-enter your password"
+              autocomplete="new-password" minlength="8">
+          </div>
+
+          <div class="row-between" id="loginOptions">
+            <label class="remember">
+              <input type="checkbox" id="remember">
+              Remember me
+            </label>
+            <a href="#" class="text-link" id="forgotLink">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            Login to CampusChoice
+          </button>
+
+          <div class="form-message" id="formMessage" role="status"></div>
+        </form>
+
+        <p class="security-note">
+          CampusChoice academic prototype. This demonstration does not
+          create real accounts or securely authenticate users.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    let currentMode = "login";
+
+    function showForm(mode) {
+      currentMode = mode;
+
+      const isRegister = mode === "register";
+
+      document.getElementById("formTitle").textContent =
+        isRegister ? "Create an account" : "Welcome back!";
+
+      document.getElementById("formSubtitle").textContent =
+        isRegister
+          ? "Register to join the CampusChoice community."
+          : "Sign in to continue to your CampusChoice account.";
+
+      document.getElementById("loginTab").classList.toggle("active", !isRegister);
+      document.getElementById("registerTab").classList.toggle("active", isRegister);
+
+      document.getElementById("nameField").classList.toggle("hidden", !isRegister);
+      document.getElementById("studentIdField").classList.toggle("hidden", !isRegister);
+      document.getElementById("roleField").classList.toggle("hidden", !isRegister);
+      document.getElementById("confirmField").classList.toggle("hidden", !isRegister);
+      document.getElementById("loginOptions").classList.toggle("hidden", isRegister);
+
+      document.getElementById("fullName").required = isRegister;
+      document.getElementById("studentId").required = isRegister;
+      document.getElementById("confirmPassword").required = isRegister;
+
+      document.getElementById("password").autocomplete =
+        isRegister ? "new-password" : "current-password";
+
+      document.getElementById("submitBtn").textContent =
+        isRegister ? "Create Account" : "Login to CampusChoice";
+
+      document.getElementById("formMessage").style.display = "none";
+    }
+
+    document.getElementById("accountForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const message = document.getElementById("formMessage");
+      const password = document.getElementById("password").value;
+
+      if (currentMode === "register") {
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+          message.textContent = "Your passwords do not match. Please try again.";
+          message.style.display = "block";
+          return;
+        }
+
+        message.textContent =
+          "This is a frontend prototype. Account registration is not connected yet. A secure backend is needed to create your account.";
+      } else {
+        message.textContent =
+          "This is a frontend prototype. Login is not connected yet, so no account has been authenticated.";
+      }
+
+      message.style.display = "block";
+    });
+
+    document.getElementById("forgotLink").addEventListener("click", function(event) {
+      event.preventDefault();
+
+      const message = document.getElementById("formMessage");
+      message.textContent =
+        "Password recovery will be available after secure account authentication is implemented.";
+      message.style.display = "block";
+    });
+  </script>
 </body>
 </html>
