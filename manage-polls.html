@@ -1,0 +1,570 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusChoice | Manage Polls</title>
+
+  <style>
+    :root {
+      --red: #a71930;
+      --dark-red: #791326;
+      --background: #f6f7fb;
+      --text: #252532;
+      --muted: #747487;
+      --border: #e9e9ef;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    header {
+      background: var(--dark-red);
+      color: white;
+      padding: 24px 6%;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 27px;
+    }
+
+    header p {
+      margin: 0;
+      color: #f2cbd2;
+      font-size: 14px;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 9px 12px;
+      border: 1px solid #b85a6c;
+      border-radius: 7px;
+    }
+
+    nav a:hover {
+      background: var(--red);
+    }
+
+    main {
+      max-width: 1050px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+
+    .intro {
+      margin-bottom: 24px;
+    }
+
+    .intro h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .intro p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--white);
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(30,30,50,0.025);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 19px;
+    }
+
+    .description {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 0 0 22px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #dcdce5;
+      border-radius: 8px;
+      font: inherit;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    input:focus, textarea:focus {
+      outline: 2px solid #e9a6b2;
+      border-color: var(--red);
+    }
+
+    textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
+
+    .choice-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .choice-row input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .remove-button {
+      border: 1px solid #e4c4ca;
+      background: #fff4f5;
+      color: var(--dark-red);
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 18px;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .primary-button {
+      width: 100%;
+      background: var(--red);
+      color: white;
+      border: none;
+      padding: 13px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .primary-button:hover {
+      background: var(--dark-red);
+    }
+
+    .secondary-button {
+      background: white;
+      color: var(--red);
+      border: 1px solid #d9a3ad;
+      padding: 10px 13px;
+      border-radius: 8px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 8px;
+      background: #fff0f2;
+      color: var(--dark-red);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .poll-item {
+      padding: 17px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .poll-item:first-child {
+      padding-top: 0;
+    }
+
+    .poll-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .poll-item h4 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .poll-item ul {
+      padding-left: 20px;
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    .delete-button {
+      background: white;
+      border: 1px solid #e2c5ca;
+      color: var(--dark-red);
+      border-radius: 7px;
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
+    .empty-state {
+      color: var(--muted);
+      background: #fafafd;
+      border: 1px dashed #d9d9e3;
+      border-radius: 9px;
+      padding: 22px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .notice {
+      margin-top: 24px;
+      background: #fff7e8;
+      border: 1px solid #f1dfb9;
+      color: #775523;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 30px 15px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        margin-top: 24px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>CampusChoice</h1>
+    <p>Student Preference Analysis and Institutional Decision Support System</p>
+
+    <nav>
+      <a href="admin.html">Admin Dashboard</a>
+      <a href="dashboard.html">Student Dashboard</a>
+      <a href="index.html">Login Page</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Poll Management</h2>
+      <p>Create campus poll drafts and preview their questions and answer choices.</p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h3>Create a Poll</h3>
+        <p class="description">
+          Enter a question and at least two answer choices.
+        </p>
+
+        <form id="pollForm">
+          <label for="pollQuestion">Poll question</label>
+          <textarea
+            id="pollQuestion"
+            maxlength="250"
+            placeholder="Example: Which campus facility should be improved first?"
+            required
+          ></textarea>
+
+          <label>Answer choices</label>
+
+          <div id="choices">
+            <div class="choice-row">
+              <input
+                type="text"
+                class="choice-input"
+                maxlength="120"
+                placeholder="Choice 1"
+                aria-label="Answer choice 1"
+                required
+              >
+            </div>
+            <div class="choice-row">
+              <input
+                type="text"
+                class="choice-input"
+                maxlength="120"
+                placeholder="Choice 2"
+                aria-label="Answer choice 2"
+                required
+              >
+            </div>
+          </div>
+
+          <button type="button" class="secondary-button" id="addChoice">
+            + Add another choice
+          </button>
+
+          <button type="submit" class="primary-button">
+            Create Poll Draft
+          </button>
+
+          <div id="formMessage" class="message" role="status"></div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h3>Poll Drafts</h3>
+        <p class="description">
+          Polls created during this browser session appear here.
+        </p>
+
+        <div id="pollList">
+          <div class="empty-state">
+            No poll drafts yet. Create a poll using the form to see it here.
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="notice">
+      <strong>Prototype notice:</strong> Poll drafts exist only in this open page.
+      They are not published to the student dashboard, saved to a database,
+      or shared with other users. Refreshing the page clears these drafts.
+      Administrator authentication is not implemented.
+    </div>
+  </main>
+
+  <footer>
+    CampusChoice · Poll Management Prototype
+  </footer>
+
+  <script>
+    const pollForm = document.getElementById("pollForm");
+    const choicesContainer = document.getElementById("choices");
+    const pollList = document.getElementById("pollList");
+    const formMessage = document.getElementById("formMessage");
+
+    const pollDrafts = [];
+    let nextPollId = 1;
+
+    document.getElementById("addChoice").addEventListener("click", function () {
+      const currentChoices =
+        choicesContainer.querySelectorAll(".choice-row").length;
+
+      if (currentChoices >= 6) {
+        showMessage("You can add up to six answer choices per poll.");
+        return;
+      }
+
+      const row = document.createElement("div");
+      row.className = "choice-row";
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "choice-input";
+      input.maxLength = 120;
+      input.placeholder = "Choice " + (currentChoices + 1);
+      input.setAttribute(
+        "aria-label",
+        "Answer choice " + (currentChoices + 1)
+      );
+      input.required = true;
+
+      const removeButton = document.createElement("button");
+      removeButton.type = "button";
+      removeButton.className = "remove-button";
+      removeButton.textContent = "Remove";
+      removeButton.setAttribute(
+        "aria-label",
+        "Remove answer choice " + (currentChoices + 1)
+      );
+
+      removeButton.addEventListener("click", function () {
+        row.remove();
+        updateChoiceFields();
+      });
+
+      row.appendChild(input);
+      row.appendChild(removeButton);
+      choicesContainer.appendChild(row);
+
+      updateChoiceFields();
+      input.focus();
+    });
+
+    function updateChoiceFields() {
+      const rows = choicesContainer.querySelectorAll(".choice-row");
+
+      rows.forEach(function (row, index) {
+        const input = row.querySelector("input");
+        input.placeholder = "Choice " + (index + 1);
+        input.setAttribute("aria-label", "Answer choice " + (index + 1));
+        input.required = true;
+
+        const removeButton = row.querySelector("button");
+
+        if (removeButton) {
+          removeButton.setAttribute(
+            "aria-label",
+            "Remove answer choice " + (index + 1)
+          );
+        }
+      });
+    }
+
+    function showMessage(message) {
+      formMessage.textContent = message;
+      formMessage.style.display = "block";
+    }
+
+    pollForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const question =
+        document.getElementById("pollQuestion").value.trim();
+
+      const choices = Array.from(
+        choicesContainer.querySelectorAll("input")
+      ).map(function (input) {
+        return input.value.trim();
+      });
+
+      if (!question) {
+        showMessage("Please enter a poll question.");
+        return;
+      }
+
+      if (choices.length < 2 || choices.some(function (choice) {
+        return choice.length === 0;
+      })) {
+        showMessage("Please provide at least two complete answer choices.");
+        return;
+      }
+
+      const normalizedChoices = choices.map(function (choice) {
+        return choice.toLowerCase();
+      });
+
+      if (new Set(normalizedChoices).size !== choices.length) {
+        showMessage("Please remove duplicate answer choices.");
+        return;
+      }
+
+      pollDrafts.push({
+        id: nextPollId++,
+        question: question,
+        choices: choices
+      });
+
+      renderPolls();
+      pollForm.reset();
+
+      choicesContainer.innerHTML = `
+        <div class="choice-row">
+          <input type="text" class="choice-input" maxlength="120"
+            placeholder="Choice 1" aria-label="Answer choice 1" required>
+        </div>
+        <div class="choice-row">
+          <input type="text" class="choice-input" maxlength="120"
+            placeholder="Choice 2" aria-label="Answer choice 2" required>
+        </div>
+      `;
+
+      showMessage("Poll draft created for this session.");
+    });
+
+    function renderPolls() {
+      pollList.replaceChildren();
+
+      if (pollDrafts.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent =
+          "No poll drafts yet. Create a poll using the form to see it here.";
+        pollList.appendChild(empty);
+        return;
+      }
+
+      pollDrafts.forEach(function (poll) {
+        const item = document.createElement("article");
+        item.className = "poll-item";
+
+        const heading = document.createElement("h4");
+        heading.textContent = poll.question;
+        item.appendChild(heading);
+
+        const list = document.createElement("ul");
+
+        poll.choices.forEach(function (choice) {
+          const li = document.createElement("li");
+          li.textContent = choice;
+          list.appendChild(li);
+        });
+
+        item.appendChild(list);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "delete-button";
+        deleteButton.textContent = "Delete draft";
+
+        deleteButton.addEventListener("click", function () {
+          const index = pollDrafts.findIndex(function (entry) {
+            return entry.id === poll.id;
+          });
+
+          if (index !== -1) {
+            pollDrafts.splice(index, 1);
+            renderPolls();
+          }
+        });
+
+        item.appendChild(deleteButton);
+        pollList.appendChild(item);
+      });
+    }
+  </script>
+</body>
+</html>
