@@ -1,1 +1,341 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusChoice | Student Dashboard</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #a90012;
+      --dark-red: #78000d;
+      --bg: #f5f6f8;
+      --text: #292929;
+      --muted: #777;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .layout { display: flex; min-height: 100vh; }
+
+    aside {
+      width: 245px;
+      background: var(--red);
+      color: white;
+      padding: 28px 18px;
+      flex-shrink: 0;
+    }
+
+    .brand { font-size: 24px; font-weight: bold; margin: 0 10px 8px; }
+    .side-subtitle { font-size: 12px; color: #ffd9dd; margin: 0 10px 35px; }
+
+    .nav-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: #f4bfc5;
+      margin: 22px 10px 10px;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 12px 13px;
+      margin-bottom: 6px;
+      color: white;
+      text-decoration: none;
+      border-radius: 7px;
+      font-size: 14px;
+    }
+
+    .nav-link:hover, .nav-link.active { background: var(--dark-red); }
+
+    main { flex: 1; min-width: 0; }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px 30px;
+      background: white;
+      border-bottom: 1px solid #e9e9ed;
+    }
+
+    header h1 { font-size: 23px; }
+    .student-tag { color: var(--muted); font-size: 13px; }
+
+    .content { padding: 30px; max-width: 1200px; margin: auto; }
+
+    .welcome {
+      padding: 28px;
+      border-radius: 12px;
+      background: linear-gradient(120deg, var(--red), #72000c);
+      color: white;
+      margin-bottom: 26px;
+    }
+
+    .welcome h2 { font-size: 27px; margin-bottom: 9px; }
+    .welcome p { color: #ffe6e9; line-height: 1.7; }
+
+    .section-heading { margin: 28px 0 16px; }
+    .section-heading h2 { font-size: 19px; margin-bottom: 5px; }
+    .section-heading p { color: var(--muted); font-size: 13px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .stat, .card {
+      background: white;
+      border: 1px solid #ededf0;
+      border-radius: 10px;
+      padding: 22px;
+    }
+
+    .stat-label { color: var(--muted); font-size: 13px; }
+    .stat-value { font-size: 29px; font-weight: bold; margin: 10px 0 4px; }
+    .stat-note { color: var(--red); font-size: 12px; }
+
+    .polls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .card h3 { font-size: 17px; margin-bottom: 10px; }
+    .card p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+    .pill {
+      display: inline-block;
+      font-size: 11px;
+      color: var(--red);
+      background: #fff0f2;
+      border-radius: 20px;
+      padding: 5px 9px;
+      margin-bottom: 13px;
+    }
+
+    .poll-options { margin-top: 17px; display: grid; gap: 9px; }
+    .poll-options label {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px;
+      border: 1px solid #e5e5e9;
+      border-radius: 7px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .poll-options input { accent-color: var(--red); }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      border: 0;
+      border-radius: 7px;
+      padding: 12px;
+      background: var(--red);
+      color: white;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover { background: var(--dark-red); }
+    .message { display: none; margin-top: 12px; color: var(--red); font-size: 12px; line-height: 1.6; }
+
+    .recommendation {
+      border-left: 4px solid var(--red);
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    footer { padding: 24px 30px; text-align: center; color: var(--muted); font-size: 12px; }
+
+    @media (max-width: 850px) {
+      .layout { display: block; }
+      aside { width: 100%; padding: 18px; }
+      .side-subtitle { margin-bottom: 15px; }
+      aside nav { display: flex; flex-wrap: wrap; gap: 5px; }
+      .nav-label { display: none; }
+      .nav-link { margin: 0; padding: 10px; }
+      header { padding: 18px; }
+      .content { padding: 18px; }
+    }
+
+    @media (max-width: 580px) {
+      .stats, .polls { grid-template-columns: 1fr; }
+      header h1 { font-size: 19px; }
+      .student-tag { font-size: 11px; text-align: right; }
+      .welcome h2 { font-size: 23px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <aside>
+      <div class="brand">CampusChoice</div>
+      <p class="side-subtitle">Student Preference System</p>
+
+      <nav>
+        <p class="nav-label">Workspace</p>
+        <a class="nav-link active" href="#overview">▦ Dashboard</a>
+        <a class="nav-link" href="#polls">☷ Campus Polls</a>
+        <a class="nav-link" href="#recommendations">✦ Recommendations</a>
+        <a class="nav-link" href="#about">ⓘ About</a>
+        <p class="nav-label">Account</p>
+        <a class="nav-link" href="index.html">↩ Return to Login</a>
+      </nav>
+    </aside>
+
+    <main>
+      <header>
+        <h1>Student Dashboard</h1>
+        <span class="student-tag">Student Portal · Prototype</span>
+      </header>
+
+      <div class="content" id="overview">
+        <section class="welcome">
+          <h2>Welcome to CampusChoice!</h2>
+          <p>
+            Your voice matters. Explore campus polls, share your
+            preferences, and help inform future campus improvements.
+          </p>
+        </section>
+
+        <div class="section-heading">
+          <h2>Your Overview</h2>
+          <p>A preview of your student activity.</p>
+        </div>
+
+        <section class="stats">
+          <article class="stat">
+            <p class="stat-label">Available Polls</p>
+            <p class="stat-value">2</p>
+            <p class="stat-note">Sample dashboard data</p>
+          </article>
+          <article class="stat">
+            <p class="stat-label">Your Votes</p>
+            <p class="stat-value" id="voteCount">0</p>
+            <p class="stat-note">Votes in this browser session</p>
+          </article>
+          <article class="stat">
+            <p class="stat-label">Recommendations</p>
+            <p class="stat-value">1</p>
+            <p class="stat-note">Sample recommendation</p>
+          </article>
+        </section>
+
+        <section id="polls">
+          <div class="section-heading">
+            <h2>Campus Polls</h2>
+            <p>Select an option to try the poll interface.</p>
+          </div>
+
+          <div class="polls">
+            <article class="card">
+              <span class="pill">Sample poll</span>
+              <h3>Which campus facility needs improvement?</h3>
+              <p>Choose the facility you would most like the university to prioritize.</p>
+
+              <div class="poll-options" id="facilityOptions">
+                <label><input type="radio" name="facility" value="Library"> Library</label>
+                <label><input type="radio" name="facility" value="Cafeteria"> Cafeteria</label>
+                <label><input type="radio" name="facility" value="Study Areas"> Study areas</label>
+              </div>
+
+              <button type="button" onclick="submitPoll('facility')">Submit Sample Vote</button>
+              <p class="message" id="facilityMessage" role="status"></p>
+            </article>
+
+            <article class="card">
+              <span class="pill">Sample poll</span>
+              <h3>Which student activity interests you most?</h3>
+              <p>Choose an activity you would like to see on campus.</p>
+
+              <div class="poll-options" id="activityOptions">
+                <label><input type="radio" name="activity" value="Sports"> Sports</label>
+                <label><input type="radio" name="activity" value="Arts and Culture"> Arts and culture</label>
+                <label><input type="radio" name="activity" value="Academic Workshops"> Academic workshops</label>
+              </div>
+
+              <button type="button" onclick="submitPoll('activity')">Submit Sample Vote</button>
+              <p class="message" id="activityMessage" role="status"></p>
+            </article>
+          </div>
+        </section>
+
+        <section id="recommendations">
+          <div class="section-heading">
+            <h2>Institutional Recommendations</h2>
+            <p>Example of how student preferences may support planning.</p>
+          </div>
+
+          <div class="recommendation">
+            <strong>Example recommendation: Improve shared study spaces.</strong>
+            <p>
+              If student feedback identifies study areas as a priority,
+              administrators could compare low-cost seating, lighting,
+              and scheduling improvements before considering more expensive
+              renovation projects.
+            </p>
+            <p><em>This is an illustrative suggestion, not a result calculated from real student data.</em></p>
+          </div>
+        </section>
+
+        <section id="about">
+          <div class="section-heading">
+            <h2>About CampusChoice</h2>
+            <p>
+              A student preference analysis and institutional decision
+              support system project prototype.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <footer>CampusChoice · Academic Project Prototype</footer>
+    </main>
+  </div>
+
+  <script>
+    const votedPolls = new Set();
+
+    function submitPoll(pollName) {
+      const message = document.getElementById(pollName + "Message");
+      const selected = document.querySelector(
+        'input[name="' + pollName + '"]:checked'
+      );
+
+      message.style.display = "block";
+
+      if (!selected) {
+        message.textContent = "Please select an option before submitting.";
+        return;
+      }
+
+      if (votedPolls.has(pollName)) {
+        message.textContent =
+          "You've already submitted this sample poll in this page session.";
+        return;
+      }
+
+      votedPolls.add(pollName);
+      document.getElementById("voteCount").textContent = votedPolls.size;
+
+      message.textContent =
+        "Sample vote recorded in this page session: " + selected.value +
+        ". It has not been saved to a database.";
+    }
+  </script>
+</body>
+</html>
