@@ -1,0 +1,569 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusChoice | Admin Dashboard</title>
+  <style>
+    :root {
+      --red: #a71930;
+      --dark-red: #791326;
+      --light-red: #fff0f2;
+      --bg: #f6f7fb;
+      --text: #252532;
+      --muted: #747487;
+      --white: #ffffff;
+      --border: #e9e9ef;
+      --green: #287a51;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 245px;
+      background: var(--dark-red);
+      color: white;
+      padding: 28px 18px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: 800;
+      margin: 0 0 5px;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: #f2cbd2;
+      margin-bottom: 36px;
+    }
+
+    .admin-label {
+      display: inline-block;
+      padding: 6px 10px;
+      border: 1px solid #c66b7d;
+      border-radius: 20px;
+      font-size: 11px;
+      margin-bottom: 25px;
+    }
+
+    .nav-heading {
+      color: #e6b7c0;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin: 15px 10px 10px;
+    }
+
+    .nav-link {
+      display: block;
+      color: #f9e9ec;
+      text-decoration: none;
+      padding: 12px 13px;
+      border-radius: 9px;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .nav-link.active,
+    .nav-link:hover {
+      background: var(--red);
+      color: white;
+    }
+
+    .sidebar-note {
+      margin-top: 40px;
+      padding: 13px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #f5dce1;
+    }
+
+    main {
+      flex: 1;
+      min-width: 0;
+      padding: 32px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(25px, 3vw, 34px);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 10px 0 0;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .sample-badge {
+      background: #fff0d8;
+      color: #865315;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 17px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 4px 15px rgba(30,30,50,0.025);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 15px;
+    }
+
+    .stat-value {
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 9px;
+    }
+
+    .stat-note {
+      font-size: 12px;
+      color: var(--green);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .section-description {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 8px 0 22px;
+    }
+
+    .result {
+      padding: 17px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .result-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .result-heading strong {
+      font-size: 14px;
+    }
+
+    .result-heading span {
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .track {
+      height: 9px;
+      background: #f0edf0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      background: var(--red);
+      border-radius: 10px;
+    }
+
+    .result-detail {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .recommendation {
+      border: 1px solid #f0d8dc;
+      background: #fff9fa;
+      border-radius: 11px;
+      padding: 16px;
+      margin-top: 14px;
+    }
+
+    .recommendation-tag {
+      color: var(--red);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+
+    .recommendation h3 {
+      font-size: 15px;
+      margin: 0 0 8px;
+    }
+
+    .recommendation p {
+      font-size: 13px;
+      color: #646473;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 400px;
+    }
+
+    th, td {
+      padding: 14px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 8px;
+      border-radius: 20px;
+      background: #e7f5ed;
+      color: #287a51;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .notice {
+      background: #fff7e8;
+      border: 1px solid #f1dfb9;
+      color: #775523;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.7;
+      margin-top: 22px;
+    }
+
+    footer {
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+      padding: 25px 0 0;
+    }
+
+    @media (max-width: 1050px) {
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .layout {
+        display: block;
+      }
+
+      .sidebar {
+        width: 100%;
+        padding: 20px;
+      }
+
+      .brand-subtitle {
+        margin-bottom: 15px;
+      }
+
+      .nav-heading,
+      .sidebar-note {
+        display: none;
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .nav-link {
+        margin: 0;
+        padding: 10px;
+        font-size: 12px;
+      }
+
+      main {
+        padding: 22px 15px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .stats {
+        gap: 10px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .stat-value {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">CampusChoice</div>
+      <div class="brand-subtitle">Student Preference Platform</div>
+      <div class="admin-label">ADMIN VIEW · DEMO</div>
+
+      <nav>
+        <p class="nav-heading">Administration</p>
+        <a class="nav-link active" href="#overview">▦ Overview</a>
+        <a class="nav-link" href="#results">▤ Poll Results</a>
+        <a class="nav-link" href="#preferences">◉ Preferences</a>
+        <a class="nav-link" href="#recommendations">✦ Recommendations</a>
+
+        <p class="nav-heading">Student Site</p>
+        <a class="nav-link" href="dashboard.html">↩ Student Dashboard</a>
+      </nav>
+
+      <div class="sidebar-note">
+        Use student feedback to understand campus needs and support informed institutional decisions.
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar" id="overview">
+        <div>
+          <div class="eyebrow">Institutional Decision Support</div>
+          <h1>Admin Dashboard</h1>
+          <p class="subtitle">
+            Review student preferences, explore poll summaries, and identify potential campus improvements.
+          </p>
+        </div>
+        <div class="sample-badge">Sample data only</div>
+      </header>
+
+      <section class="stats" aria-label="Summary statistics">
+        <article class="card">
+          <div class="stat-label">Sample Polls</div>
+          <div class="stat-value">4</div>
+          <div class="stat-note">Illustrative dataset</div>
+        </article>
+
+        <article class="card">
+          <div class="stat-label">Sample Responses</div>
+          <div class="stat-value">248</div>
+          <div class="stat-note">Not actual student votes</div>
+        </article>
+
+        <article class="card">
+          <div class="stat-label">Top Preference</div>
+          <div class="stat-value">72%</div>
+          <div class="stat-note">Study spaces</div>
+        </article>
+
+        <article class="card">
+          <div class="stat-label">Suggested Actions</div>
+          <div class="stat-value">3</div>
+          <div class="stat-note">For review by administrators</div>
+        </article>
+      </section>
+
+      <div class="content-grid">
+        <section class="card" id="results">
+          <h2 class="section-title">Poll Results Overview</h2>
+          <p class="section-description">
+            Example response distribution for selected campus topics.
+          </p>
+
+          <div class="result">
+            <div class="result-heading">
+              <strong>More study spaces</strong>
+              <span>72%</span>
+            </div>
+            <div class="track"><div class="bar" style="width:72%"></div></div>
+            <div class="result-detail">72 of 100 example responses</div>
+          </div>
+
+          <div class="result">
+            <div class="result-heading">
+              <strong>Affordable food options</strong>
+              <span>64%</span>
+            </div>
+            <div class="track"><div class="bar" style="width:64%"></div></div>
+            <div class="result-detail">64 of 100 example responses</div>
+          </div>
+
+          <div class="result">
+            <div class="result-heading">
+              <strong>More campus activities</strong>
+              <span>58%</span>
+            </div>
+            <div class="track"><div class="bar" style="width:58%"></div></div>
+            <div class="result-detail">58 of 100 example responses</div>
+          </div>
+
+          <div class="result">
+            <div class="result-heading">
+              <strong>Improved campus Wi-Fi</strong>
+              <span>81%</span>
+            </div>
+            <div class="track"><div class="bar" style="width:81%"></div></div>
+            <div class="result-detail">81 of 100 example responses</div>
+          </div>
+        </section>
+
+        <section class="card" id="preferences">
+          <h2 class="section-title">Student Preference Summary</h2>
+          <p class="section-description">
+            Key themes suggested by the example results.
+          </p>
+
+          <div class="recommendation">
+            <div class="recommendation-tag">Highest preference</div>
+            <h3>Reliable campus Wi-Fi</h3>
+            <p>In this example dataset, Wi-Fi improvements received the highest support at 81%.</p>
+          </div>
+
+          <div class="recommendation">
+            <div class="recommendation-tag">Learning environment</div>
+            <h3>More study spaces</h3>
+            <p>Students may benefit from additional quiet study areas or more accessible library spaces.</p>
+          </div>
+
+          <div class="recommendation">
+            <div class="recommendation-tag">Campus services</div>
+            <h3>Affordable food choices</h3>
+            <p>Reviewing food prices and available meal options may be worth considering.</p>
+          </div>
+        </section>
+
+        <section class="card" id="recommendations" style="grid-column: 1 / -1;">
+          <h2 class="section-title">Suggested Institutional Actions</h2>
+          <p class="section-description">
+            Possible next steps based on the illustrative results. Administrators should validate these findings before acting.
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Priority</th>
+                  <th>Suggested action</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Assess campus Wi-Fi coverage</td>
+                  <td>81% example preference</td>
+                  <td><span class="status">For review</span></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Review study space availability</td>
+                  <td>72% example preference</td>
+                  <td><span class="status">For review</span></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Evaluate food affordability</td>
+                  <td>64% example preference</td>
+                  <td><span class="status">For review</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div class="notice">
+        <strong>Prototype notice:</strong> All figures and recommendations on this page are illustrative sample data. This page is not connected to a database or the student voting system. It does not provide secure administrator authentication.
+      </div>
+
+      <footer>
+        CampusChoice · Student Preference Analysis and Institutional Decision Support System
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
